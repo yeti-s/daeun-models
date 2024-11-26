@@ -6,3 +6,6 @@ langgraph
 python-dotenv
 transformers
 sentence_transformers
+FlagEmbedding
+fastapi
+uvicorn

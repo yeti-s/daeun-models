@@ -39,7 +39,7 @@ class State(TypedDict):
     # created
     query:str
     passages:list[Document]
-    answer_stream:str
+    stream:str
     
     
 # ==================================================================================
@@ -49,7 +49,7 @@ class State(TypedDict):
 def initialize_node(state: State) -> dict:
     return {
         'node': INITIALIZE,
-        'elapsed': time.time()
+        'elapsed': time.time(),
     }
 
 def to_query_node(state: State) -> dict:
@@ -69,10 +69,13 @@ def semantic_search_node(state: State) -> dict:
     embedder = state['embedder']
     chunker = state['chunker']
     query = state['query']
+    elapsed = state['elapsed']
     pages = search(engine, query)
+    logging.debug(f"[Elapsed:{SEMANTIC_SEARCH}-SEARCHING] {time.time() - elapsed:.2f}")
     chunks = chunk(chunker, pages)
+    logging.debug(f"[Elapsed:{SEMANTIC_SEARCH}-CHUNKING] {time.time() - elapsed:.2f}")
     passages = semantic_search(embedder, query, chunks)
-    logging.debug(f"[Elapsed:{SEMANTIC_SEARCH}] {time.time() - state['elapsed']:.2f}")
+    logging.debug(f"[Elapsed:{SEMANTIC_SEARCH}] {time.time() - elapsed:.2f}")
     
     return {
         'node': SEMANTIC_SEARCH,
@@ -83,12 +86,12 @@ def generate_answer_node(state: State) -> dict:
     generator = state['generator']
     question = state['question']
     passages = state['passages']
-    answer_stream = generate_answer(generator, question, passages)
+    stream = generate_answer(generator, question, passages)
     logging.debug(f"[Elapsed:{GENERATE_ANSWER}] {time.time() - state['elapsed']:.2f}")
     
     return {
         'node': GENERATE_ANSWER,
-        'answer_stream': answer_stream,
+        'stream': stream,
         'elapsed': time.time() - state['elapsed']
     }
 

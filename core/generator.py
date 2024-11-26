@@ -60,4 +60,7 @@ def generate(llm:ChatOpenAI, messages:Union[list[BaseMessage], list[list[BaseMes
         return response
 
 def stream(llm:ChatOpenAI, messages:Union[list[BaseMessage], list[list[BaseMessage]]]) -> Iterator[BaseMessageChunk]:
+    if not is_system_prompt_available(llm):
+        messages = system_to_user_prompt(messages)
+        
     return llm.stream(messages)

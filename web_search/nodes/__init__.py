@@ -1,4 +1,4 @@
-from .to_passage_node import to_passage
+from .to_query_node import to_query
 from .semantic_search_node import search, chunk, semantic_search
 
 

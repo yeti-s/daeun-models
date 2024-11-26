@@ -1,14 +1,13 @@
 from typing import Union
-from langchain_community.embeddings import HuggingFaceBgeEmbeddings
+from FlagEmbedding import BGEM3FlagModel
 
-# example of init LLM
-# HuggingFaceBgeEmbeddings(
-#     model_name=EMBEDDING_LLM_NAME, 
-#     model_kwargs={"device": "cuda"},
-#     encode_kwargs={"normalize_embeddings": True}
-# )
+# example of init model
+# model = BGEM3FlagModel(EMBEDDING_LLM_NAME,  use_fp16=True)
 
-def embed(llm:HuggingFaceBgeEmbeddings, text: Union[str, list[str]]) -> list[list[float]]:
-    if type(text) == list:
-        return llm.embed_documents(text)
-    return [llm.embed_query(text)]
+def embed(model:BGEM3FlagModel, text: Union[str, list[str]], batch_size=8, max_length=512) -> list[list[float]]:
+    text = [text] if type(text) == str else text
+    return model.encode(
+        text,
+        batch_size=batch_size,
+        max_length=max_length,
+    )['dense_vecs']

@@ -7,6 +7,10 @@ GOOGLE_SEARCH_API_KEY = os.environ['GOOGLE_SEARCH_API_KEY']
 GOOGLE_SEARCH_ENGINE_ID = os.environ['GOOGLE_SEARCH_ENGINE_ID']
 GOOGLE_SEARCH_URL = 'https://www.googleapis.com/customsearch/v1?{params}'
 
+NAVER_CLIENT_ID = os.environ['NAVER_CLIENT_ID']
+NAVER_CLIENT_SECRET = os.environ['NAVER_CLIENT_SECRET']
+NAVER_SEARCH_URL = url = "https://openapi.naver.com/v1/search/webkr?{params}"
+
 class SearchResult():
     def __init__(self, title:str, link:str, snippet:str):
         self.title = title
@@ -42,3 +46,22 @@ class GoogleSearchEngine(SearchEngine):
             item['snippet']
         ) for item in response.json()['items']]
     
+class NaverSearchEngine(SearchEngine):
+    def search(self, query:str) -> list[SearchResult]:
+        params = parse.urlencode({'query': query}, doseq=True)
+        response = requests.get(
+            NAVER_SEARCH_URL.format(params=params),
+            headers={
+                "X-Naver-Client-Id": NAVER_CLIENT_ID, 
+                "X-Naver-Client-Secret": NAVER_CLIENT_SECRET
+            }
+        )
+        
+        if response.status_code != 200:
+            raise Exception('Failed to fetch results from Naver Search API')
+        
+        return [SearchResult(
+            item['title'],
+            item['link'],
+            item['description']
+        ) for item in response.json()['items']]

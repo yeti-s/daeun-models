@@ -1,5 +1,5 @@
 from .to_passage_node import to_passage
-from .search_and_chunk_node import search, chunk
+from .semantic_search_node import search, chunk, semantic_search
 
 
 __all__ = []

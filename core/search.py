@@ -12,6 +12,12 @@ class SearchResult():
         self.title = title
         self.link = link
         self.snippet = snippet
+        
+    def __str__(self):
+        return f'{self.title}\n{self.link}\n{self.snippet}\n' + '-'*80 + '\n'
+    
+    def __repr__(self):
+        return f'SearchResult(title={self.title}, link={self.link}, snippet={self.snippet})'
     
 class SearchEngine(ABC):
     @abstractmethod

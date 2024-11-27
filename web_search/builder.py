@@ -27,7 +27,6 @@ GENERATE_ANSWER = "GENERATE_ANSWER_NODE"
 
 
 class State(TypedDict):
-    node:str
     history:list[BaseMessage]
     elapsed:float
     # inputs
@@ -48,7 +47,6 @@ class State(TypedDict):
 
 def initialize_node(state: State) -> dict:
     return {
-        'node': INITIALIZE,
         'elapsed': time.time(),
     }
 
@@ -60,7 +58,6 @@ def to_query_node(state: State) -> dict:
     logging.debug(f"[Elapsed:{TO_QUERY}] {time.time() - state['elapsed']:.2f}")
 
     return {
-        'node': TO_QUERY,
         'query': query
     }
     
@@ -78,7 +75,6 @@ def semantic_search_node(state: State) -> dict:
     logging.debug(f"[Elapsed:{SEMANTIC_SEARCH}] {time.time() - elapsed:.2f}")
     
     return {
-        'node': SEMANTIC_SEARCH,
         'passages': passages
     }
 
@@ -90,7 +86,6 @@ def generate_answer_node(state: State) -> dict:
     logging.debug(f"[Elapsed:{GENERATE_ANSWER}] {time.time() - state['elapsed']:.2f}")
     
     return {
-        'node': GENERATE_ANSWER,
         'stream': stream,
         'elapsed': time.time() - state['elapsed']
     }

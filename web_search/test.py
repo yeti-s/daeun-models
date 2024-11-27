@@ -4,9 +4,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+from FlagEmbedding import BGEM3FlagModel
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, AIMessage
-from langchain_community.embeddings import HuggingFaceBgeEmbeddings
 
 from core.utils import init_logging
 from core.search import GoogleSearchEngine, NaverSearchEngine
@@ -33,17 +33,13 @@ generator = ChatOpenAI(
 
 chunker = RecursiveChunker()
 
-embedder = HuggingFaceBgeEmbeddings(
-    model_name=EMBEDDING_LLM_NAME, 
-    model_kwargs={"device": "cuda"},
-    encode_kwargs={"normalize_embeddings": True}
-)
+embedder = BGEM3FlagModel('BAAI/bge-m3',  use_fp16=True)
 
 questions = [
     '노벨 문학상을 받은 작가 이름이 뭐야',
     '올해에 받은 작가 이름 알려줘',
     '그럼 작가의 대표작 두 가지는',
-    '아이폰 SE에 대한 최신 소식 알려줘.'
+    '아이폰 SE4 출시일과 정보 알려줘'
 ]
 
 history = []
@@ -58,13 +54,14 @@ for question in questions:
         'question': question,
     }, stream_mode='updates'):
         for key, item in event.items():
-            
-            if 'answer_stream' in item:
+            print(f'================ {key} ================')
+            if 'stream' in item:
+                print(f'Q: {question}\n')
                 answer = ''
-                for ch in item['answer_stream']:
+                for ch in item['stream']:
                     answer += ch.content
                     print(ch.content, end='', flush=True)
-                    
+                print('')
                 history.append(HumanMessage(content=question))
                 history.append(AIMessage(content=answer))
                 

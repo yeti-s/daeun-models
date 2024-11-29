@@ -11,6 +11,7 @@ from langchain_core.messages import HumanMessage, AIMessage
 from core.utils import init_logging
 from core.search import GoogleSearchEngine, NaverSearchEngine
 from core.chunker import RecursiveChunker
+from common.summarize_comversation import summarize_conversation
 from .builder import graph
 
 init_logging(logging.DEBUG)
@@ -45,8 +46,10 @@ questions = [
 history = []
 
 for question in questions:
+    prev_conv = '' if len(history) == 0 else summarize_conversation(generator, history)    
+    
     for event  in graph.stream({
-        'history': history,
+        'prev_conv': prev_conv,
         'generator': generator,
         'engine': NaverSearchEngine(),
         'chunker': chunker,

@@ -17,7 +17,7 @@ def chunk(chunker:Chunker, pages:list[SearchResult]) -> list[Document]:
     docs = WebBaseLoader(links).load_and_split(chunker)
     return docs
 
-def semantic_search(model:BGEM3FlagModel, query:str, chunks:list[Document], top_k:int=10):
+def semantic_search(model:BGEM3FlagModel, query:str, chunks:list[Document], top_k:int=5):
     q_embedding = embed(model, query)
     embeddings = embed(model, chunks)
     similarities = cosine_similarity(q_embedding, embeddings).flatten()  # Compute cosine similarity

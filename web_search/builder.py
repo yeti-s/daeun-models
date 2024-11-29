@@ -27,7 +27,7 @@ GENERATE_ANSWER = "GENERATE_ANSWER_NODE"
 
 
 class State(TypedDict):
-    history:list[BaseMessage]
+    prev_conv:str
     elapsed:float
     # inputs
     generator:ChatOpenAI
@@ -51,10 +51,10 @@ def initialize_node(state: State) -> dict:
     }
 
 def to_query_node(state: State) -> dict:
-    history = state['history']
+    prev_conv = state['prev_conv']
     generator = state['generator']
     question = state['question']
-    query = to_query(generator, question, history)
+    query = to_query(generator, question, prev_conv)
     logging.debug(f"[Elapsed:{TO_QUERY}] {time.time() - state['elapsed']:.2f}")
 
     return {
@@ -79,10 +79,11 @@ def semantic_search_node(state: State) -> dict:
     }
 
 def generate_answer_node(state: State) -> dict:
+    prev_conv = state['prev_conv']
     generator = state['generator']
     question = state['question']
     passages = state['passages']
-    stream = generate_answer(generator, question, passages)
+    stream = generate_answer(generator, question, passages, prev_conv)
     logging.debug(f"[Elapsed:{GENERATE_ANSWER}] {time.time() - state['elapsed']:.2f}")
     
     return {

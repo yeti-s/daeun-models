@@ -11,7 +11,7 @@ from langchain_core.messages import HumanMessage, AIMessage
 from core.utils import init_logging
 from core.search import GoogleSearchEngine, NaverSearchEngine
 from core.chunker import RecursiveChunker
-from common.summarize_comversation import summarize_conversation
+from common.summarize_comversation_node import summarize_conversation
 from .builder import graph
 
 init_logging(logging.DEBUG)

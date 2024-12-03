@@ -12,15 +12,12 @@ SYSTEM_PROMPT = """You are an AI assistant tasked with summarizing conversations
 5. Exclude unnecessary details or repetitive content.
 6. Maintain an objective and neutral tone.
 7. The summary should be concise but include all essential information.
-
-## Summary Format
-
-- Limit the summary to 3-5 sentences.
-- Use short bullet point lists if necessary.
+8. Follow this summary format:
+    - Limit the summary to 3-5 sentences.
+    - Summary should be written in Korean.
 
 ## Example Output
-
-The user inquired about AI ethics. The AI explained key principles including transparency, fairness, and privacy. When the user requested real-world applications, the AI provided examples of self-driving cars and medical diagnostic systems. The conversation concluded with a discussion on the importance of AI ethics and future challenges in the field.
+사용자가 AI 윤리에 대해 질문했습니다. AI는 투명성, 공정성, 그리고 프라이버시를 포함한 주요 원칙을 설명했습니다. 사용자가 실제 사례를 요청하자 AI는 자율주행차와 의료 진단 시스템의 예를 제시했습니다. 대화는 AI 윤리의 중요성과 이 분야에서의 미래 도전에 대한 논의로 마무리되었습니다.
 
 Based on this summary, understand the context of the conversation and prepare the next response."""
 

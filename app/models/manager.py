@@ -1,10 +1,10 @@
 import time
+import logging
 from queue import Queue
 from typing import Callable
 from threading import Thread
 
 from .tts import GenOption, TTS
-from ..shared.utils import info, debug, error, warn
 
 INFO_TEMPLATE = """Complete audio generation
 model: {model}
@@ -37,7 +37,7 @@ class TTSQueue():
                         option.format
                     )
                     
-                    info(INFO_TEMPLATE.format(
+                    logging.info(INFO_TEMPLATE.format(
                         model=model.name,
                         text=text,
                         volume=option.volume,

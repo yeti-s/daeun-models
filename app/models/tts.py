@@ -5,8 +5,6 @@ import soundfile as sf
 from abc import ABCMeta, abstractmethod
 from melo.api import TTS as MeloTTS
 
-from ..shared.utils import info, debug, error, warn
-
 
 class GenOption():
     def __init__(self, volume:float, speed:float, pitch:float, format:str) -> None:

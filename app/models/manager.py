@@ -50,7 +50,7 @@ class TTSQueue():
 
                     handler(True, audio_bytes)
                 except Exception as err:
-                    error(f'Error found on generating {text} by {model.name}. {str(err)}')
+                    logging.error(f'Error found on generating {text} by {model.name}. {str(err)}')
                     handler(False, audio_bytes)
             # wait for a while to prevent overload
             time.sleep(0.1)

@@ -58,7 +58,7 @@ class Melo(TTS):
         self.name = 'melo'
 
         # load model
-        self.generate('모델을 불러옵니다.')
+        self.generate('모델을 불러옵니다.', 1.0, 1.0, 1.0, 'mp3')
     
     def get_sample_rate(self) -> int:
         return self.tts.hps.data.sampling_rate
